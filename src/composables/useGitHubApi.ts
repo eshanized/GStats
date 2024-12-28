@@ -8,16 +8,18 @@ export function useGitHubApi() {
   const isLoading = ref(false);
   const error = ref<string | null>(null);
 
+  // Parse the GitHub URL and extract owner/repo
   const parseGitHubUrl = (url: string): { owner: string; repo: string } | null => {
     try {
       const urlObj = new URL(url);
       const [, owner, repo] = urlObj.pathname.split('/');
-      return { owner, repo };
+      return owner && repo ? { owner, repo } : null;
     } catch {
       return null;
     }
   };
 
+  // Fetch repository data, including languages and contributors
   const fetchRepositoryData = async (url: string) => {
     const parsed = parseGitHubUrl(url);
     if (!parsed) {
@@ -28,34 +30,36 @@ export function useGitHubApi() {
     isLoading.value = true;
     error.value = null;
 
-    // Create headers with a personal access token if available
+    // Prepare headers, including GitHub token if available
     const headers: Record<string, string> = {
       'Accept': 'application/vnd.github.v3+json'
     };
 
-    // Add token if available in environment
+    // Add the token to headers if it's defined in the environment
     const token = import.meta.env.VITE_GITHUB_TOKEN;
     if (token) {
       headers['Authorization'] = `token ${token}`;
     }
 
     try {
+      // Parallel API requests for repository data, languages, and contributors
       const [repoData, languages, contributors] = await Promise.all([
         axios.get<Repository>(`${GITHUB_API_BASE}/repos/${owner}/${repo}`, { headers }),
         axios.get<LanguageStats>(`${GITHUB_API_BASE}/repos/${owner}/${repo}/languages`, { headers }),
         axios.get<Contributor[]>(`${GITHUB_API_BASE}/repos/${owner}/${repo}/contributors`, { headers })
       ]);
 
+      // Calculate total lines of code and prepare language stats
       const totalLines = Object.values(languages.data).reduce((acc, curr) => acc + curr, 0);
-      
       const languageStats = Object.entries(languages.data).map(([name, lines]) => ({
         name,
-        files: 0,
+        files: 0,  // Note: You may want to calculate the actual files count if relevant
         lines,
         percentage: (lines / totalLines) * 100,
-        color: '#' + Math.floor(Math.random()*16777215).toString(16)
+        color: '#' + Math.floor(Math.random() * 16777215).toString(16)
       }));
 
+      // Return structured data
       return {
         repository: repoData.data,
         codeStats: {
@@ -65,6 +69,7 @@ export function useGitHubApi() {
         contributors: contributors.data
       };
     } catch (e) {
+      // Improved error handling for different cases
       if (axios.isAxiosError(e)) {
         if (e.response?.status === 403) {
           error.value = 'GitHub API rate limit exceeded. Please try again later or add a GitHub token.';
@@ -74,7 +79,7 @@ export function useGitHubApi() {
           error.value = e.response?.data?.message || 'Failed to fetch repository data';
         }
       } else {
-        error.value = e instanceof Error ? e.message : 'Failed to fetch repository data';
+        error.value = e instanceof Error ? e.message : 'An unknown error occurred while fetching repository data';
       }
       throw error.value;
     } finally {

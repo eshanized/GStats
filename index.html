@@ -2,12 +2,42 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- SEO meta tags -->
+    <meta name="description" content="Github Repository Stats - By ehsnaized" />
+    <meta name="author" content="Eshan Roy" />
+    <meta name="keywords" content="Vite, Vue, TypeScript, web development" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://your-site.com" />
+    <meta property="og:title" content="Vite + Vue + TypeScript" />
+    <meta property="og:description" content="A fast and modern web app built with Vite, Vue, and TypeScript." />
+    <meta property="og:image" content="path_to_image.jpg" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@eshanized" />
+    <meta name="twitter:title" content="Vite + Vue + TypeScript" />
+    <meta name="twitter:description" content="A fast and modern web app built with Vite, Vue, and TypeScript." />
+    <meta name="twitter:image" content="path_to_image.jpg" />
+    
+    <!-- Icons -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    
     <title>Vite + Vue + TS</title>
+
+    <!-- Preload main script for faster load -->
+    <link rel="preload" href="/src/main.ts" as="script" />
   </head>
-  <body>
-    <div id="app"></div>
+  <body class="bg-gray-100 font-sans antialiased">
+    <div id="app" aria-live="polite" role="main"></div>
+
+    <!-- Main JavaScript -->
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

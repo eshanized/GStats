@@ -9,48 +9,54 @@ const emit = defineEmits<{
 
 <template>
   <div class="space-y-4">
-    <div v-if="bookmarks.length > 0" class="card">
-      <h3 class="text-lg font-semibold mb-3 flex items-center gap-2">
-        <span class="text-nord-frost1">⭐</span> Bookmarks
+    <!-- Bookmarks Section -->
+    <div v-if="bookmarks.length > 0" class="card shadow-lg rounded-lg p-4 bg-white">
+      <h3 class="text-lg font-semibold mb-3 flex items-center gap-2 text-nord-frost1">
+        <span class="text-xl">⭐</span> Bookmarks
       </h3>
       <div class="space-y-2">
-        <button
+        <div
           v-for="url in bookmarks"
           :key="url"
           @click="emit('select', url)"
-          class="w-full text-left px-3 py-2 rounded-lg hover:bg-nord-2/30 transition-colors flex items-center justify-between"
+          class="w-full text-left px-3 py-2 rounded-lg hover:bg-nord-2/30 transition-colors flex items-center justify-between cursor-pointer"
+          aria-label="Select bookmark"
         >
-          <span class="truncate">{{ url }}</span>
+          <span class="truncate" aria-hidden="true">{{ url }}</span>
           <button
             @click.stop="toggleBookmark(url)"
             class="text-nord-frost1 hover:text-nord-frost2"
+            aria-label="Remove bookmark"
           >
             ⭐
           </button>
-        </button>
+        </div>
       </div>
     </div>
 
-    <div v-if="history.length > 0" class="card">
-      <h3 class="text-lg font-semibold mb-3 flex items-center gap-2">
-        <span class="text-nord-frost2">🕒</span> Recent
+    <!-- Recent History Section -->
+    <div v-if="history.length > 0" class="card shadow-lg rounded-lg p-4 bg-white">
+      <h3 class="text-lg font-semibold mb-3 flex items-center gap-2 text-nord-frost2">
+        <span class="text-xl">🕒</span> Recent
       </h3>
       <div class="space-y-2">
-        <button
+        <div
           v-for="url in history"
           :key="url"
           @click="emit('select', url)"
-          class="w-full text-left px-3 py-2 rounded-lg hover:bg-nord-2/30 transition-colors flex items-center justify-between"
+          class="w-full text-left px-3 py-2 rounded-lg hover:bg-nord-2/30 transition-colors flex items-center justify-between cursor-pointer"
+          aria-label="Select recent item"
         >
-          <span class="truncate">{{ url }}</span>
+          <span class="truncate" aria-hidden="true">{{ url }}</span>
           <button
             v-if="!bookmarks.includes(url)"
             @click.stop="toggleBookmark(url)"
             class="text-nord-snow0/30 hover:text-nord-frost1"
+            aria-label="Add to bookmarks"
           >
             ⭐
           </button>
-        </button>
+        </div>
       </div>
     </div>
   </div>
