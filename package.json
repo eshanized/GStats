@@ -1,12 +1,13 @@
 {
-  "name": "github-analytics-dashboard",
+  "name": "gstats",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "vite build && gh-pages -d dist"
   },
   "dependencies": {
     "vue": "^3.4.38",
@@ -23,6 +24,14 @@
     "tailwindcss": "^3.4.1",
     "postcss": "^8.4.35",
     "autoprefixer": "^10.4.17",
-    "@types/node": "^20.11.20"
-  }
+    "@types/node": "^20.11.20",
+    "gh-pages": "^5.0.0"
+  },
+  "author": {
+    "name": "Eshan Roy",
+    "email": "m.eshanized@gmail.com",
+    "url": "https://eshanized.github.io"
+  },
+  "license": "MIT",
+  "homepage": "https://eshanized.github.io/gstats"
 }
