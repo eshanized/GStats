@@ -85,7 +85,7 @@ onMounted(async () => {
           </div>
           <div class="flex items-center gap-2">
             <span class="text-red-400">-</span>
-            <span class="font-mono text-xl">{{ contributor.deletions.toLocaleString() }}</span>
+            <span class="font-mono text-xl">{{ contributor.deletions?.toLocaleString() || 0 }}</span>
           </div>
         </div>
       </div>

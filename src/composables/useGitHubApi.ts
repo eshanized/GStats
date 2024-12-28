@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import axios from 'axios';
-import type { Repository, LanguageStats, Contributor, CodeStats } from '../types/github';
+import type { Repository, LanguageStats, Contributor } from '../types/github';
 
 const GITHUB_API_BASE = 'https://api.github.com';
 
