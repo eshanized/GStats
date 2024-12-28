@@ -30,16 +30,10 @@ export function useGitHubApi() {
     isLoading.value = true;
     error.value = null;
 
-    // Prepare headers, including GitHub token if available
+    // Prepare headers without token
     const headers: Record<string, string> = {
       'Accept': 'application/vnd.github.v3+json'
     };
-
-    // Add the token to headers if it's defined in the environment
-    const token = import.meta.env.VITE_GITHUB_TOKEN;
-    if (token) {
-      headers['Authorization'] = `token ${token}`;
-    }
 
     try {
       // Parallel API requests for repository data, languages, and contributors
@@ -72,7 +66,7 @@ export function useGitHubApi() {
       // Improved error handling for different cases
       if (axios.isAxiosError(e)) {
         if (e.response?.status === 403) {
-          error.value = 'GitHub API rate limit exceeded. Please try again later or add a GitHub token.';
+          error.value = 'GitHub API rate limit exceeded. Please try again later.';
         } else if (e.response?.status === 404) {
           error.value = 'Repository not found. Please check the URL and try again.';
         } else {
